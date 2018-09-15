@@ -238,7 +238,7 @@ if $cygwin; then
   CATALINA_BASE=`cygpath --absolute --windows "$CATALINA_BASE"`
   CATALINA_TMPDIR=`cygpath --absolute --windows "$CATALINA_TMPDIR"`
   CLASSPATH=`cygpath --path --windows "$CLASSPATH"`
-  JAVA_ENDORSED_DIRS=`cygpath --path --windows "$JAVA_ENDORSED_DIRS"`
+  [ -n "$JAVA_ENDORSED_DIRS" ] && JAVA_ENDORSED_DIRS=`cygpath --path --windows "$JAVA_ENDORSED_DIRS"`
 fi
 
 if [ -z "$JSSE_OPTS" ] ; then
@@ -294,6 +294,7 @@ fi
 
 # Add the JAVA 9 specific start-up parameters required by Tomcat
 JDK_JAVA_OPTIONS="$JDK_JAVA_OPTIONS --add-opens=java.base/java.lang=ALL-UNNAMED"
+JDK_JAVA_OPTIONS="$JDK_JAVA_OPTIONS --add-opens=java.base/java.io=ALL-UNNAMED"
 JDK_JAVA_OPTIONS="$JDK_JAVA_OPTIONS --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED"
 export JDK_JAVA_OPTIONS
 
@@ -494,7 +495,7 @@ elif [ "$1" = "stop" ] ; then
       if [ -s "$CATALINA_PID" ]; then
         kill -0 `cat "$CATALINA_PID"` >/dev/null 2>&1
         if [ $? -gt 0 ]; then
-          echo "PID file found but no matching process was found. Stop aborted."
+          echo "PID file found but either no matching process was found or the current user does not have permission to stop the process. Stop aborted."
           exit 1
         fi
       else
