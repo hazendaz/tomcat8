@@ -13,3 +13,5 @@ This project takes tomcat 8.0.53 zip and expands on it to provide the following.
 - And if you want, drop back in tomcat wars and those are pre-configured as well but intentionally left out
 
 note: Credential usage here is simply for testing purposes only and should be considered exposed.
+
+Master tested as of 5/2/2024 on java 8 to work successfully using built in psi probe.
